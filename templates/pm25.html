@@ -19,11 +19,21 @@
             background-color: black;
             color: white;
         }
+
+        #sort {
+            background-color: aqua;
+        }
     </style>
 </head>
 
 <body>
     <h1 class="banner">PM2.5資訊</h1>
+    <form action="/pm25" method="post" style="margin-bottom: 12px;">
+        <input type="submit" value="排序" name="sort" id="sort">
+        <input type="submit" value="更新" name="update">
+    </form>
+
+
     {% if not columns %}
     <h3 style="color:red">資料忙碌中，請稍後再試._.</h3>
     {% else %}
