@@ -13,22 +13,27 @@ stocks = [
 ]
 
 
+@app.route('/update')
+def update_db():
+    import pm25_db
+    return '資料庫更新成功!'
+
+
 @app.route('/pm25-charts')
 def pm25_charts():
 
     return render_template('./pm25_charts.html')
 
 
-@app.route('/pm25-data', methods=['get'])
+@app.route('/pm25-data', methods=['POST'])
 def get_pm25_data():
     columns, values = get_pm25_db()
     # 縣市
     county = [value[1] for value in values]
     # 站點名稱
     site = [value[0] for value in values]
-    # pm25數值
+    # pm2.5數值
     pm25 = [value[2] for value in values]
-
     datas = {
         'county': county,
         'site': site,
@@ -42,14 +47,16 @@ def get_pm25_data():
 def pm25():
     if request.method == 'GET':
         columns, values = get_pm25_db()
-        # 單純使用GET
+        # 使用GET => request.args.get(name)
         # if request.args.get('sort'):
-        #columns, values = get_pm25(True)
+        #     olumns, values = get_pm25(True)
     if request.method == 'POST':
         if request.form.get('sort'):
             columns, values = get_pm25_db(True)
         else:
-            columns, values = get_pm25()
+            columns, values = get_pm25_db()
+
+    print(columns, values)
 
     return render_template('./pm25.html', **locals())
 
@@ -57,7 +64,8 @@ def pm25():
 @app.route('/stock')
 def stock():
 
-    return render_template('./stock.html', stocks=stocks, datetime=get_date())
+    return render_template('./stock.html', stocks=stocks,
+                           datetime=get_date())
 
 
 @app.route('/index')
@@ -74,6 +82,11 @@ def get_date():
     return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
+
+
 @app.route('/book')
 @app.route('/book/<int:id>')
 def get_book(id=None):
@@ -85,9 +98,8 @@ def get_book(id=None):
             return books
     except Exception as e:
         print(e)
-        return '<h2>查詢錯誤，請重新輸入</h2>'
+        return '<h2>查詢錯誤，請重新輸入~</h2>'
 
 
 if __name__ == '__main__':
-    get_date()
     app.run(debug=True)
