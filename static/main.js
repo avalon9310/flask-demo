@@ -1,4 +1,3 @@
-
 const chart = echarts.init(document.querySelector('#main'));
 const chart1 = echarts.init(document.querySelector('#six'));
 
@@ -13,6 +12,11 @@ $(document).ready(() => {
     drawPM25();
     drawSixPM25();
 });
+
+window.onresize = function () {
+    chart.resize();
+    chart1.resize();
+}
 
 
 function drawSixPM25() {
@@ -40,6 +44,9 @@ function drawSixPM25() {
                     yAxis: {},
                     series: [
                         {
+                            itemStyle: {
+                                color: '#8b008b'
+                            },
                             name: '數值',
                             type: 'bar',
                             data: data['pm25']
@@ -98,5 +105,4 @@ function drawPM25() {
     );
 
 }
-
 

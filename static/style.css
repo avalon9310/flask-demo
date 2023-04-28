@@ -1,5 +1,6 @@
 body {
     text-align: center;
+    background-color: antiquewhite;
 }
 
 li {
@@ -17,10 +18,4 @@ li {
     background-color: cadetblue;
     padding: 12px;
     color: white;
-}
-
-table {
-    background-color: aqua;
-    width: 800px;
-    margin: 0 auto;
 }
