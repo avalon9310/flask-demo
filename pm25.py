@@ -3,10 +3,18 @@ import sqlite3
 import pandas as pd
 
 columns, values = None, None
+df = None
+
+
+def get_county_pm25(county):
+    datas = df.groupby('county').get_group(county)[
+        ['site', 'pm25']].values.tolist()
+
+    return datas
 
 
 def get_six_pm25():
-    global values, columns
+    global values, columns, df
     six_pm25 = {}
     if values is None or columns is None:
         get_pm25_db()
@@ -73,4 +81,4 @@ def get_pm25(sort=False):
 
 
 if __name__ == '__main__':
-    print(get_six_pm25())
+    print(get_county_pm25('新北市'))

@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request
 from datetime import datetime
-from pm25 import get_pm25, get_pm25_db, get_six_pm25
+from pm25 import get_pm25, get_pm25_db, get_six_pm25, get_county_pm25
 import json
 
 app = Flask(__name__)
@@ -21,8 +21,20 @@ def update_db():
 
 @app.route('/pm25-charts')
 def pm25_charts():
+    countys = ['臺北市', '桃園市', '嘉義縣', '新竹市', '臺南市', '澎湖縣', '金門縣', '臺中市', '苗栗縣', '宜蘭縣',
+               '基隆市', '臺東縣', '花蓮縣', '新北市', '南投縣', '屏東縣', '嘉義市', '彰化縣', '高雄市', '雲林縣', '新竹縣', '連江縣']
+    return render_template('./pm25-charts-bulma.html', countys=countys)
 
-    return render_template('./pm25-charts-bulma.html')
+
+@app.route('/pm25-data/<county>')
+def get_county_pm25_data(county):
+    result = get_county_pm25(county)
+    datas = {
+        'site': [data[0] for data in result],
+        'pm25': [data[1] for data in result],
+    }
+
+    return json.dumps(datas, ensure_ascii=False)
 
 
 @app.route('/pm25-six-data')
