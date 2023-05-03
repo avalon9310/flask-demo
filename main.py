@@ -50,7 +50,7 @@ def get_six_pm25_data():
 
 @app.route('/pm25-data', methods=['POST'])
 def get_pm25_data():
-    columns, values = get_pm25_db()
+    columns, values = get_pm25()
 
     datas = {'error': '連線錯誤!'}
     if values is not None:
