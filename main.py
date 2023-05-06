@@ -80,12 +80,12 @@ def get_pm25_data():
 @app.route('/pm25', methods=['GET', 'POST'])
 def pm25():
     if request.method == 'GET':
-        columns, values = get_pm25_db()
+        columns, values = get_pm25()
     if request.method == 'POST':
         if request.form.get('sort'):
-            columns, values = get_pm25_db(True)
+            columns, values = get_pm25(True)
         else:
-            columns, values = get_pm25_db()
+            columns, values = get_pm25()
 
     print(columns, values)
 
